@@ -24,11 +24,16 @@ int main() {
 	string number;
 	double num;
 
+	//write place
+	/*
 	filename_binary_s = filename_binary + filetype_binary;
 	filename_binary_c = &filename_binary_s[0u];
 	fout = fopen(filename_binary_c, "w");
+	*/
+
 
 	//for one example
+	/*
 	filename_txt_s = filename_txt + filetype_txt;
 	filename_txt_c = &filename_txt_s[0u];
 	fin = fopen(filename_txt_c, "r");
@@ -37,7 +42,7 @@ int main() {
 		fprintf(fout, "%lf", num);
 	}
 	fclose(fin);
-
+	*/
 
 	//for multi example with number orderded
 	/*
@@ -57,6 +62,6 @@ int main() {
 	fclose(fin);
 	}
 	*/
-	fclose(fout);
+	//fclose(fout);
 	return 0;
 }
