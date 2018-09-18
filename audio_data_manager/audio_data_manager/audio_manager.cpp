@@ -23,6 +23,7 @@ void printWAVHeader(wav_header_t header){
 }
 
 void wav_to_txt(const char* fileName_wav, const char* fileName_txt){
+	//rb+ 인 경우는 수정하고싶을때.
 	//Load file pointer
 	FILE *fin = fopen(fileName_wav, "rb");
 	FILE *fout = fopen(fileName_txt, "w+");
