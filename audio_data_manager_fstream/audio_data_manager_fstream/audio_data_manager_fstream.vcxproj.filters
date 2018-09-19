@@ -15,12 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="audio_data_manager_fstream.cpp">
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="audio_manager_fstream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="audio_data_manager_fstream.h">
+    <ClInclude Include="audio_manager_fstream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

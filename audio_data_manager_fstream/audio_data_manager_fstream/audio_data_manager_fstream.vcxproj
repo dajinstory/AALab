@@ -76,10 +76,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="audio_data_manager_fstream.cpp" />
+    <ClCompile Include="audio_manager_fstream.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="audio_data_manager_fstream.h" />
+    <ClInclude Include="audio_manager_fstream.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
