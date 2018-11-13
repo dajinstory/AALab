@@ -35,7 +35,7 @@ void divide_audio(int num, int time, int div){
 	unsigned long chunk_size;
 
 	//load big data
-	sprintf(name, "./input/data-%d.wav", num);
+	sprintf(name, "./input/scream (%d).wav", num);
 	fin = fopen(name, "rb");
 
 	//load header and chunk
@@ -43,9 +43,13 @@ void divide_audio(int num, int time, int div){
 	while (true)
 	{
 		fread(&chunk, sizeof(chunk), 1, fin);
-		printf("%c%c%c%c\t" "%u\n", chunk.ID[0], chunk.ID[1], chunk.ID[2], chunk.ID[3], chunk.size);
-		if (*(unsigned int *)&chunk.ID == 0x61746164)
+		printf("%c%c%c%c\t%u\n",chunk.ID[0], chunk.ID[1], chunk.ID[2], chunk.ID[3], chunk.size);
+		if (*(unsigned int *)&chunk.ID ==0x61746164)
 			break;
+		if (chunk.ID[2] == 'd' && chunk.ID[3] == 'a'){
+			fseek(fin, -(sizeof(chunk) - 2), SEEK_CUR);
+			continue;
+		}
 		//skip chunk data bytes
 		fseek(fin, chunk.size, SEEK_CUR);
 	}
@@ -55,7 +59,7 @@ void divide_audio(int num, int time, int div){
 	//load audio data
 	for (idx = 1; feof(fin) == 0; idx++){
 		//load directory to be saved
-		sprintf(name, "./output/data-%d/data-%d-%d.wav", num, num, idx);
+		sprintf(name, "./output/data-%d-%d.wav", num, idx);
 		fout = fopen(name, "wb");
 
 		//write header and chunk
