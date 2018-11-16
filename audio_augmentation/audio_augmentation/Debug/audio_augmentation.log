@@ -1,13 +1,21 @@
-<<<<<<< HEAD
-﻿Build started 2018-11-13 오후 2:40:53.
+﻿Build started 2018-11-13 오후 5:25:38.
      1>Project "C:\Users\my\Desktop\Coding\audio_augmentation\audio_augmentation\audio_augmentation.vcxproj" on node 2 (Build target(s)).
-=======
-﻿Build started 2018-10-24 오후 2:26:06.
-     1>Project "C:\Users\dajin\Desktop\Coding\audio_augmentation\audio_augmentation\audio_augmentation.vcxproj" on node 2 (Build target(s)).
->>>>>>> b95e7cfa5e9f8e0a30d7c5b0c361d58433c6c10c
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Source.cpp audio_augmentation.cpp
+         audio_augmentation.cpp
+     1>c:\users\my\desktop\coding\audio_augmentation\audio_augmentation\audio_augmentation.cpp(41): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\users\my\desktop\coding\audio_augmentation\audio_augmentation\audio_augmentation.cpp(42): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\my\desktop\coding\audio_augmentation\audio_augmentation\audio_augmentation.cpp(43): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\my\desktop\coding\audio_augmentation\audio_augmentation\audio_augmentation.cpp(78): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(356) : see declaration of 'sprintf'
+     1>c:\users\my\desktop\coding\audio_augmentation\audio_augmentation\audio_augmentation.cpp(79): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+     1>c:\users\my\desktop\coding\audio_augmentation\audio_augmentation\audio_augmentation.cpp(38): warning C4101: 'chunk_size' : unreferenced local variable
          Source.cpp
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\my\Desktop\Coding\audio_augmentation\Debug\audio_augmentation.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\my\Desktop\Coding\audio_augmentation\Debug\audio_augmentation.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\my\Desktop\Coding\audio_augmentation\Debug\audio_augmentation.lib" /MACHINE:X86 Debug\audio_augmentation.obj
          Debug\Source.obj
@@ -16,8 +24,4 @@
 
 Build succeeded.
 
-<<<<<<< HEAD
-Time Elapsed 00:00:00.33
-=======
-Time Elapsed 00:00:01.44
->>>>>>> b95e7cfa5e9f8e0a30d7c5b0c361d58433c6c10c
+Time Elapsed 00:00:00.53
