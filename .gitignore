@@ -1,5 +1,5 @@
-/build
-/_build
-/x64
-/crsf
-/vcpkg
+## Ignore Files ##
+
+*.log
+*.bak
+*.wav
