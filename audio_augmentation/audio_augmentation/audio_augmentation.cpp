@@ -38,7 +38,7 @@ void divide_audio(int num, int time, int div){
 	unsigned long chunk_size;
 
 	//load big data
-	sprintf(name, "./input/sample (%d).wav", num);
+	sprintf(name, "./input/audio (%d).wav", num);
 	fin = fopen(name, "rb");
 	headerFile = fopen("./input/header_format.wav", "rb");
 
@@ -75,7 +75,7 @@ void divide_audio(int num, int time, int div){
 		for (int volume = -4; volume <= 2; volume ++){
 			//load directory to be saved
 			FILE *fout;
-			sprintf(name, "./output/sample-%d-%d-(%d).wav", num, idx, volume);
+			sprintf(name, "./output/data-%d-%d-(%d).wav", num, idx, volume);
 			fout = fopen(name, "wb");
 
 			//write header and chunk
