@@ -38,7 +38,7 @@ void divide_audio(int num, int time, int div){
 	unsigned long chunk_size;
 
 	//load big data
-	sprintf(name, "./input/5s_nondanger/5s_nondanger (%d).wav", num);
+	sprintf(name, "./input/sample (%d).wav", num);
 	fin = fopen(name, "rb");
 	headerFile = fopen("./input/header_format.wav", "rb");
 
@@ -75,7 +75,7 @@ void divide_audio(int num, int time, int div){
 		for (int volume = -4; volume <= 2; volume ++){
 			//load directory to be saved
 			FILE *fout;
-			sprintf(name, "./output/3s_nondanger/data-%d-%d-(%d).wav", num, idx, volume);
+			sprintf(name, "./output/sample-%d-%d-(%d).wav", num, idx, volume);
 			fout = fopen(name, "wb");
 
 			//write header and chunk
@@ -91,9 +91,9 @@ void divide_audio(int num, int time, int div){
 			//Renew number of samples
 			header.chunkSize = samples_count * 2 + 36;
 			chunk.size = samples_count * 2;
-	//		fseek(fout, 0, SEEK_SET);
-	//		fwrite(&header, sizeof(header), 1, fout);
-	//		fwrite(&chunk, sizeof(chunk), 1, fout);
+			fseek(fout, 0, SEEK_SET);
+			fwrite(&header, sizeof(header), 1, fout);
+			fwrite(&chunk, sizeof(chunk), 1, fout);
 			fclose(fout);
 		}
 		//move some data for next duplicated things
