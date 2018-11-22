@@ -8,9 +8,10 @@
 #define CLOCKSIZE 44100 * 2
 
 using namespace std;
-
+int ratio[44100];
 char name[40];
 short int value[CLOCKSIZE * 5];
+int value_int[CLOCKSIZE * 5];
 short int changed_value[CLOCKSIZE * 5];
 
 void printWAVHeader(wav_header_t header){
@@ -40,7 +41,7 @@ void make_impulse(int num, int len, int power){
 	//load big data
 	sprintf(name, "./input/audio/audio (%d).wav", num);
 	fin = fopen(name, "rb");
-	sprintf(name, "./output/mixed_sound_%d-%d-%d.wav", num, len, power);
+	sprintf(name, "./output/impulse_sound_%d-%d-%d.wav", num, len, power);
 	fout = fopen(name, "wb");
 	//load header and chunk
 	fread(&header, sizeof(header), 1, fin);
@@ -68,15 +69,61 @@ void make_impulse(int num, int len, int power){
 	//load audio data
 	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
 		fread(&value[idx], sample_size, 1, fin);
+		value_int[idx] = (int)value[idx];
 	}
+	
+	//check ratio array
+	for (int i = 0, rate = 1; rate <= 16384 * 2; i += rate, rate *= 2){
+		if (i == 1){
+			i = 10000;
+			rate *= 2;
+		}
+		for (int k = 0; k < rate; k++){
+			ratio[i + k] = 16384 / rate;
+		}
+	}
+	int before = 1;
+	for (int i = 0; i < 1024*32 - 1; i++){
+//		if (ratio[i] != before)printf("\n");
+//		printf("%d ", ratio[i]);
+//		before = ratio[i];
+	}
+
 	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
 		////////////////////////////////////////////////////¹Ù²ãÁà¾ßÇÑ´Ù¹Ù²ãÁà¾ßÇÑ´Ù. len°ªÀÌ¶û powerÀÌ¶û 100À¸·Î ³ª´²ÁÖ´Â°Í°°Àº ¼¶¼¼ÇÑ¾Öµé ´Ù ¹Ù²ãÁà¾ßÇÑ´ç¸¶¤Ó;¤Ã¤·¤¤¸¶¤Ó¤Ã¤«¤¤ÀÌ¤Ã¤¿¤¤¤±¤·¶ó¤Ó¤Ã¤·
+		/*
 		if (idx < len){
 			changed_value[idx] = value[idx];
 		}
 		else{
 			changed_value[idx] = value[idx] + value[idx - len] * power / 100;
 		}
+		*/
+		long long sum = 0;
+		long long div = 0;
+		/*
+		for (int j = 0; idx - j >= 0 && j < 44100;j++){// 1024 * 32 - 1; j++){
+			sum += ratio[j] * value_int[idx - j];
+			div += ratio[j];
+		}
+		*/
+		sum += 1000 * value_int[idx];
+		div += 1000;
+		if (idx > 3000){
+			sum += 600 * value_int[idx - 3000];
+			div += 600;
+			if (idx > 25000){
+				sum += 100 * value_int[idx - 25000];
+				div += 100;
+				if (idx > 80000){
+					sum += 30 * value_int[idx - 80000];
+					div += 30;
+				}
+			}
+		}
+		changed_value[idx] = (short int)(sum / div);
+		if (idx % 44100 == 0)printf("processing..");
+		//changed_value[idx] = (changed_value[idx - 1] + value[idx] * 15) / 16;
 	}
 	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
 		fwrite(&changed_value[idx], sample_size, 1, fout);
@@ -84,4 +131,3 @@ void make_impulse(int num, int len, int power){
 	fclose(fin);
 	fclose(fout);
 }
-
