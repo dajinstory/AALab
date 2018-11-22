@@ -25,4 +25,4 @@ struct chunk_t
 };
 
 void printWAVHeader(wav_header_t);
-void converge_audio(int num1, int num2);
+void converge_audio(int num1, int num2, int r1, int r2);

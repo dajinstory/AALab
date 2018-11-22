@@ -30,7 +30,7 @@ void printWAVHeader(wav_header_t header){
 	printf("\n");
 }
 
-void converge_audio(int num1, int num2){
+void converge_audio(int num1, int num2, int r1, int r2){
 	int idx, samples_count = 0, sample_size;
 	int cnt = 0;
 	FILE *fin1, *fin2, *fout;
@@ -43,7 +43,7 @@ void converge_audio(int num1, int num2){
 	fin1 = fopen(name, "rb");
 	sprintf(name, "./input/background/background (%d).wav", num2);
 	fin2 = fopen(name, "rb");
-	sprintf(name, "./output/mixed_sound_%d-%d.wav", num1, num2);
+	sprintf(name, "./output/mixed_sound_%d-%d(%d-%d).wav", num1, num2, r1, r2);
 	fout = fopen(name, "wb");
 	//load header and chunk
 	fread(&header, sizeof(header), 1, fin1);
@@ -91,7 +91,10 @@ void converge_audio(int num1, int num2){
 		fread(&value_2[idx], sample_size, 1, fin2);
 	}
 	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
-		changed_value[idx] = (value_1[idx] + value_2[idx]) / 2;
+		int v1, v2;
+		v1 = (int)value_1[idx];
+		v2 = (int)value_2[idx];
+		changed_value[idx] = (short int)((v1*r1 + v2*r2) / (r1 + r2));
 	}
 	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
 		fwrite(&changed_value[idx], sample_size, 1, fout);
