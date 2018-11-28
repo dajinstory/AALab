@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include "audio_augmentation.h"
 #define CLOCKSIZE 44100 * 2
-
+#define SHORTINT_MAX 32767
+#define POWERLEVEL 5
 using namespace std;
 
 char name[40];
 short int value[CLOCKSIZE*100];
+short int increased_value[CLOCKSIZE * 100];
 short int changed_value[CLOCKSIZE * 100];
 
 void printWAVHeader(wav_header_t header){
@@ -38,7 +40,7 @@ void divide_audio(int num, int time, int div){
 	unsigned long chunk_size;
 
 	//load big data
-	sprintf(name, "./input/audio (%d).wav", num);
+	sprintf(name, "./input/5s_scream/5s_scream (%d).wav", num);
 	fin = fopen(name, "rb");
 	headerFile = fopen("./input/header_format.wav", "rb");
 
@@ -69,13 +71,30 @@ void divide_audio(int num, int time, int div){
 		for (; samples_count < CLOCKSIZE * time && feof(fin) == 0; samples_count++){
 			fread(&value[samples_count], sample_size, 1, fin);
 		}
+		
+		//if EOF, break;
 		if (samples_count != CLOCKSIZE*time){
 			break;
 		}
-		for (int volume = -4; volume <= 2; volume ++){
+
+		//to avoid overflow, make the audio data to maximum volume, and then decrease.
+		short int max_value = 0;
+		for (int i = 0; i < samples_count; i++){
+			short int tmp = value[i];
+			if (tmp < 0)tmp = -tmp;
+			if (tmp > max_value)max_value = tmp;
+		}
+		for (int i = 0; i < samples_count; i++){
+			int tmp = (int)value[i];
+			tmp *= SHORTINT_MAX;
+			tmp /= max_value;
+			increased_value[i] = (short int)tmp;
+		}
+		
+		for (int volume = 1; volume <= POWERLEVEL; volume++){
 			//load directory to be saved
 			FILE *fout;
-			sprintf(name, "./output/data-%d-%d-(%d).wav", num, idx, volume);
+			sprintf(name, "./output/3s_danger_scream/3s_danger_scream-%d-%d-(%d).wav", num, idx, volume);
 			fout = fopen(name, "wb");
 
 			//write header and chunk
@@ -83,8 +102,18 @@ void divide_audio(int num, int time, int div){
 			fwrite(&chunk, sizeof(chunk), 1, fout);
 
 			//write audio data
+			int maxpower = 1, nowpower = 1;
+			for (int i = 0; i < POWERLEVEL; i++){
+				maxpower *= POWERLEVEL + 1 - i;
+			}
+			for (int i = 0; i < volume; i++){
+				nowpower *= POWERLEVEL + 1 - i;
+			}
 			for (int i = 0; i < samples_count; i++){
-				changed_value[i] = value[i] +value[i] / 5 * volume;
+				long long tmp = (long long)increased_value[i];
+				tmp *= nowpower;
+				tmp /= maxpower;
+				changed_value[i] = (short int)tmp;
 				fwrite(&changed_value[i], sample_size, 1, fout);
 			}
 
