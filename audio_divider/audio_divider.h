@@ -1,3 +1,4 @@
+#define CLOCKSIZE 44100 * 2
 
 //Wav Header
 struct wav_header_t
@@ -25,4 +26,4 @@ struct chunk_t
 };
 
 void printWAVHeader(wav_header_t);
-void divide_audio(int num, int time);
+void divide_audio(int num, int time, int div);

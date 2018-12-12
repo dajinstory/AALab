@@ -5,12 +5,11 @@
 #include <cmath>
 #include <stdlib.h>
 #include "audio_divider.h"
-#define READSIZE 44100 * 2
 
 using namespace std;
 
-char name[40];
-short int value[READSIZE*100];
+char name[100];
+short int value[CLOCKSIZE*100];
 
 void printWAVHeader(wav_header_t header){
 	printf("WAV File Header read:\n");
@@ -27,25 +26,32 @@ void printWAVHeader(wav_header_t header){
 	printf("Bits per Sample: %hd\n", header.bitsPerSample);
 }
 
-void divide_audio(int num, int time){
-	int idx, samples_count, sample_size;
-	FILE *fin, *fout;
+void divide_audio(int num, int time, int div){
+	int idx, samples_count = 0, sample_size;
+	FILE *fin, *headerFile;
 	wav_header_t header;
 	chunk_t chunk;
 	unsigned long chunk_size;
 
 	//load big data
-	sprintf(name, "./input/data-%d.wav", num);
+	sprintf(name, "D:\\ETRI_database\\1. 5초이상으로 나름 정리한애들\\non_scream\\non_scream (%d).wav", num);
 	fin = fopen(name, "rb");
+	headerFile = fopen("./input/header_format.wav", "rb");
 
 	//load header and chunk
 	fread(&header, sizeof(header), 1, fin);
+	fread(&header, sizeof(header), 1, headerFile);
+
 	while (true)
 	{
 		fread(&chunk, sizeof(chunk), 1, fin);
-		printf("%c%c%c%c\t" "%u\n", chunk.ID[0], chunk.ID[1], chunk.ID[2], chunk.ID[3], chunk.size);
+		printf("%c%c%c%c\t%u\n", chunk.ID[0], chunk.ID[1], chunk.ID[2], chunk.ID[3], chunk.size);
 		if (*(unsigned int *)&chunk.ID == 0x61746164)
 			break;
+		if (chunk.ID[2] == 'd' && chunk.ID[3] == 'a'){
+			fseek(fin, -6, SEEK_CUR);
+			continue;
+		}
 		//skip chunk data bytes
 		fseek(fin, chunk.size, SEEK_CUR);
 	}
@@ -54,33 +60,41 @@ void divide_audio(int num, int time){
 
 	//load audio data
 	for (idx = 1; feof(fin) == 0; idx++){
+
+		//read (44100 x time) data
+		for (; samples_count < CLOCKSIZE * time && feof(fin) == 0; samples_count++){
+			fread(&value[samples_count], sample_size, 1, fin);
+		}
+
+		//if EOF, break;
+		if (samples_count != CLOCKSIZE*time){
+			break;
+		}
+
 		//load directory to be saved
-		sprintf(name, "./output/data-%d/data-%d-%d.wav", num, num, idx);
-		fout = fopen(name, "wb");
+		sprintf(name, "D:\\ETRI_database\\2-1. 3s_divide\\3s_similar\\3s_similar-%d-%d.wav", num, idx);
+		FILE *fout = fopen(name, "wb");
+
+		//Renew number of samples
+		header.chunkSize = samples_count * 2 + 36;
+		chunk.size = samples_count * 2;
 
 		//write header and chunk
 		fwrite(&header, sizeof(header), 1, fout);
 		fwrite(&chunk, sizeof(chunk), 1, fout);
-
-		//read (44100 x time) data
-		for (samples_count = 0; samples_count < READSIZE * time && feof(fin) == 0; samples_count++){
-			fread(&value[samples_count], sample_size, 1, fin);
-		}
 
 		//and write it
 		for (int i = 0; i < samples_count; i++){
 			fwrite(&value[i], sample_size, 1, fout);
 		}
 
-		//Renew number of samples
-		header.chunkSize = samples_count * 2 + 36;
-		chunk.size = samples_count * 2;
-		fseek(fout, 0, SEEK_SET);
-		fwrite(&header, sizeof(header), 1, fout);
-		fwrite(&chunk, sizeof(chunk), 1, fout);
+		//move some data for next duplicated things
+		for (int i = 0; i < samples_count - div; i++){
+			value[i] = value[i + div];
+		}
+		samples_count -= div;;
+		fclose(fout);
 	}
-	fclose(fin);
-	fclose(fout);
-	
+	fclose(fin);	
 }
 
