@@ -1,0 +1,1 @@
+Every audio format is 2channel stereo, 16bit, 44100
