@@ -4,9 +4,9 @@
 #include <cstdio>
 #include <cmath>
 #include <stdlib.h>
-#include "audio_augmentation_2.h"
+#include "audio_mix.h"
 #define CLOCKSIZE 44100 * 2
-
+#define TIME_S 3
 using namespace std;
 
 char name[40];
@@ -39,6 +39,7 @@ void converge_audio(int num1, int num2, int r1, int r2){
 	unsigned long chunk_size;
 
 	//load big data
+	//change the path 
 	sprintf(name, "./input/audio/audio (%d).wav", num1);
 	fin1 = fopen(name, "rb");
 	sprintf(name, "./input/background/background (%d).wav", num2);
@@ -86,17 +87,17 @@ void converge_audio(int num1, int num2, int r1, int r2){
 	fwrite(&chunk, sizeof(chunk), 1, fout);
 
 	//load audio data
-	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
+	for (idx = 0; idx < CLOCKSIZE * TIME_S; idx++){
 		fread(&value_1[idx], sample_size, 1, fin1);
 		fread(&value_2[idx], sample_size, 1, fin2);
 	}
-	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
+	for (idx = 0; idx < CLOCKSIZE * TIME_S; idx++){
 		int v1, v2;
 		v1 = (int)value_1[idx];
 		v2 = (int)value_2[idx];
 		changed_value[idx] = (short int)((v1*r1 + v2*r2) / (r1 + r2));
 	}
-	for (idx = 0; idx < CLOCKSIZE * 3; idx++){
+	for (idx = 0; idx < CLOCKSIZE * TIME_S; idx++){
 		fwrite(&changed_value[idx], sample_size, 1, fout);
 	}
 	fclose(fin1);

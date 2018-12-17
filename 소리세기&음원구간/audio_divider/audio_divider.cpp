@@ -34,7 +34,9 @@ void divide_audio(int num, int time, int div){
 	unsigned long chunk_size;
 
 	//load big data
-	sprintf(name, "D:\\ETRI_database\\1. 5초이상으로 나름 정리한애들\\non_scream\\non_scream (%d).wav", num);
+	//change "D:\\database\\scream (%d).wav" to your local path to load
+	//sprintf(name, "D:\\database\\scream (%d).wav", num);
+	sprintf(name, "./input/audio (%d).wav", num);
 	fin = fopen(name, "rb");
 	headerFile = fopen("./input/header_format.wav", "rb");
 
@@ -72,7 +74,9 @@ void divide_audio(int num, int time, int div){
 		}
 
 		//load directory to be saved
-		sprintf(name, "D:\\ETRI_database\\2-1. 3s_divide\\3s_similar\\3s_similar-%d-%d.wav", num, idx);
+		//change "D:\\database\\output\\scream-%d-%d.wav" to your local path to load
+		//sprintf(name, "D:\\database\\output\\scream-%d-%d.wav", num, idx);
+		sprintf(name, "./output/audio-%d-%d.wav", num, idx);
 		FILE *fout = fopen(name, "wb");
 
 		//Renew number of samples

@@ -38,7 +38,10 @@ void volume_aug(int num, int volumes){
 	unsigned long chunk_size;
 
 	//load big data
-	sprintf(name, "D:\\ETRI_database\\2. 3s_standard\\3s_speech\\3s_speech-%d.wav", num);
+	//change "D:\\database\\3s_speech\\3s_speech-%d.wav" to your local path to load
+	//the length of input audio files must be fixed.
+	//sprintf(name, "D:\\database\\3s_speech\\3s_speech-%d.wav", num);
+	sprintf(name, "./input/audio (%d).wav", num);
 	fin = fopen(name, "rb");
 
 	//load header and chunk
@@ -83,7 +86,10 @@ void volume_aug(int num, int volumes){
 	for (int volume = 1; volume <= POWERLEVEL; volume++){
 		//load directory to be saved
 		FILE *fout;
-		sprintf(name, "D:\\ETRI_database\\2-2. sound_aug\\3s_speech\\3s_speech-%d-%d.wav", num, volume);
+		//change "D:\\database\\output\\3s_speech\\3s_speech-%d-%d.wav" to your local path to save
+		//sprintf(name, "D:\\database\\output\\3s_speech\\3s_speech-%d-%d.wav", num, volume);
+		sprintf(name, "./output/audio-%d-%d.wav", num, volume);
+
 		fout = fopen(name, "wb");
 
 		//write header and chunk

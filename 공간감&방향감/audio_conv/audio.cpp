@@ -77,7 +77,7 @@ void audio::conv(short int* arr, short int* result){
 void audio::writeWav(char* filename, short int* result){
 	FILE *fout;
 	int sample_size = header.bitsPerSample / 8;
-	fout = fopen("out.wav", "wb");
+	fout = fopen(filename, "wb");
 	fwrite(&header, sizeof(header), 1, fout);
 	fwrite(&chunk, sizeof(chunk), 1, fout);
 	for (int i = 0; i < READSIZE * AUDIOTIME; i++){
